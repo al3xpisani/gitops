@@ -1,0 +1,22 @@
+name: CDGitOps
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code-base
+      uses: actions/checkout@v3
+
+    - name: Build and push image to DockerHub
+      uses: docker/build-push-action@v1.1.0
+      with: 
+        username: ${{ secrets.DOCKER_USENAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: ${{ secrets.DOCKER_USENAME }}/gitops
+        tags: ${{ github.sha }}, latest
